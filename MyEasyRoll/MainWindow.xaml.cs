@@ -174,26 +174,26 @@ namespace MyEasyRoll
                 rp_pass_label.Foreground = new SolidColorBrush(Color.FromRgb(214, 11, 11));
             }
             else
-            {
-                database datab = new database();
+        {
+            database datab = new database();
                 MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO users (id,login,name,surname,password,email,email_verify) VALUES (NULL,@uL,@uN,@uS,@uP,@uE,'no');", datab.getConnection());
-                SQLcommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value = rp_login.Text;
-                SQLcommand.Parameters.Add("@uN", MySqlDbType.VarChar).Value = rp_name.Text;
-                SQLcommand.Parameters.Add("@uS", MySqlDbType.VarChar).Value = rp_surname.Text;
-                SQLcommand.Parameters.Add("@uP", MySqlDbType.VarChar).Value = rp_password.Password.ToString();
-                SQLcommand.Parameters.Add("@uE", MySqlDbType.VarChar).Value = rp_email.Text;
+            SQLcommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value = rp_login.Text;
+            SQLcommand.Parameters.Add("@uN", MySqlDbType.VarChar).Value = rp_name.Text;
+            SQLcommand.Parameters.Add("@uS", MySqlDbType.VarChar).Value = rp_surname.Text;
+            SQLcommand.Parameters.Add("@uP", MySqlDbType.VarChar).Value = rp_password.Password.ToString();
+            SQLcommand.Parameters.Add("@uE", MySqlDbType.VarChar).Value = rp_email.Text;
 
-                datab.openConnection();
-                if (SQLcommand.ExecuteNonQuery() == 1)
-                {
-                    general_tabs.SelectedItem = map_0;
+            datab.openConnection();
+            if (SQLcommand.ExecuteNonQuery() == 1)
+            {
+                general_tabs.SelectedItem = map_0;
                     logined_user.Content = rp_surname.Text + " " + rp_name.Text + "(" + rp_login.Text + ")";
-                    logined_user.Visibility = Visibility.Visible;
-                }
-
-                else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
-                datab.closeConnection();
+                logined_user.Visibility = Visibility.Visible;
             }
+                
+                else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
+            datab.closeConnection();
+        }
         }
 
         private void rp_email_GotFocus(object sender, RoutedEventArgs e)
@@ -285,10 +285,12 @@ namespace MyEasyRoll
         {
             if (mp_menus.Width == 45)
             {
+                mp_tools_dock.Margin = new Thickness(300, 0, 0, 0);
                 mp_menus.Width = 300;
             }
             else
             {
+                mp_tools_dock.Margin = new Thickness(45, 0, 0, 0);
                 mp_menus.Width = 45;
             }
         }
@@ -393,7 +395,7 @@ namespace MyEasyRoll
                 mp_map_viewbox.Width = mp_map_viewbox.Width + 50;
             }
             else
-            {
+        {
                 mp_map_viewbox.Height = mp_map_viewbox.Height - 50;
                 mp_map_viewbox.Width = mp_map_viewbox.Width - 50;
             }
@@ -416,14 +418,39 @@ namespace MyEasyRoll
                     mp_map_grid.RowDefinitions.Add(rw);
                     Border br = new Border();
                     br.Name = "Cell" + i.ToString() + o.ToString();
-                    br.BorderThickness = new Thickness(1, 1, 1, 0);
+                    br.MouseEnter += CellEnter;
+                    br.MouseLeave += CellLeave;
+                    br.BorderThickness = new Thickness(1, 1, 0, 0);
                     br.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
                     br.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
                     Grid.SetRow(br, o);
                     Grid.SetColumn(br, i);
                     mp_map_grid.Children.Add(br);
+                    if (o == 49)
+                        if (i==49) br.BorderThickness = new Thickness(1, 1, 1, 1);
+                    else br.BorderThickness = new Thickness(1, 1, 1, 0);
                 }
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            _111.Content = "EbsTooDay";
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _111.Content = "aAa";
+        }
+
+        private void CellEnter(object sender, MouseEventArgs e)
+        {
+            (sender as Border).Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 85));
+        }
+
+        private void CellLeave(object sender, MouseEventArgs e)
+        {
+            (sender as Border).Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
     }
 }

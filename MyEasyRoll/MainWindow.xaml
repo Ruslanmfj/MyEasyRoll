@@ -1,0 +1,104 @@
+﻿<Window x:Name="General_window" x:Class="MyEasyRoll.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyEasyRoll"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="1079.6" Width="1920" WindowStyle="None" AllowsTransparency="True" Loaded="General_window_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="TabItemBackground1" EndPoint="0,1">
+            <GradientStop Color="#FFF0F0F0"/>
+            <GradientStop Color="#FFE5E5E5" Offset="1"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="TextBoxForeground1" Color="#FFF57C01"/>
+    </Window.Resources>
+    <Grid Background="#FF252525">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="45*"/>
+        </Grid.RowDefinitions>
+        <TabControl x:Name="general_tabs" Visibility="Visible" Background="{x:Null}" Grid.RowSpan="2" Grid.Row="1" BorderBrush="{x:Null}" d:IsHidden="True">
+            <TabItem Background="{x:Null}" x:Name="wellcome_page" Visibility="Hidden" BorderBrush="{x:Null}">
+                <Grid x:Name="wp_grid" Height="1057">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="wp_wellcome_text" Content="My Easy Roll" Foreground="#FFF53801" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="72" Background="{x:Null}" Grid.Column="1" Margin="0,100,0,0" FontFamily="Castellar" FontStyle="Normal"/>
+                    <Image Grid.Column="1" Source="/dragon.png" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="643,0,0,0">
+                        <Image.Effect>
+                            <DropShadowEffect/>
+                        </Image.Effect>
+                    </Image>
+                    <Label x:Name="wp_wellcome_text2" Content="Добро пожаловать в программу для удаленной игры в D&amp;D 5 редакции." Foreground="#FFF57B01" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" Background="{x:Null}" Grid.Column="1" Margin="50,200,0,0" FontFamily="Bookman Old Style" FontStyle="Normal"/>
+                    <Label x:Name="wp_wellcome_text3" Content="Она создана для бесплатного пользования, чтобы игроки с самых" Foreground="#FFF57B01" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" Background="{x:Null}" Grid.Column="1" Margin="100,255,0,0" FontFamily="Bookman Old Style" FontStyle="Normal"/>
+                    <Label x:Name="wp_wellcome_text4" Content="дальних уголков земли, могли насладиться" Foreground="#FFF57B01" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" Background="{x:Null}" Grid.Column="1" Margin="100,310,0,0" FontFamily="Bookman Old Style" FontStyle="Normal"/>
+                    <Label x:Name="wp_wellcome_text5" Content="компанией друг-друга в фентезийных мирах." Foreground="#FFF57B01" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" Background="{x:Null}" Grid.Column="1" Margin="100,365,0,0" FontFamily="Bookman Old Style" FontStyle="Normal"/>
+                    <Label x:Name="wp_wellcome_text6" Content="Играйте в миры других игроков" Foreground="#FFF57B01" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" Background="{x:Null}" Grid.Column="1" Margin="100,420,0,0" FontFamily="Bookman Old Style" FontStyle="Normal"/>
+                    <Label x:Name="wp_wellcome_text7" Content="или создавайте свои." Foreground="#FFF57B01" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" Background="{x:Null}" Grid.Column="1" Margin="100,475,0,0" FontFamily="Bookman Old Style" FontStyle="Normal"/>
+                    <Label x:Name="wp_wellcome_text8" Content="Удачи! И да благославит вас бахамут." Foreground="#FFF57B01" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" Background="{x:Null}" Grid.Column="1" Margin="100,530,0,0" FontFamily="Bookman Old Style" FontStyle="Normal"/>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <DockPanel LastChildFill="False" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="0">
+                            <Grid DockPanel.Dock="Top" Height="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Button x:Name="wp_login_button" Content="Вход" Background="#FF1E74CA" BorderThickness="0,0,0,0" Margin="20,5,20,10" Grid.Row="5" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontWeight="Normal" FontStyle="Normal" FontStretch="UltraExpanded"/>
+                                <Label Content="Имя пользователя или email" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" FontFamily="Book Antiqua" Foreground="#FFF57C01"/>
+                                <TextBox x:Name="wp_userlog" TextWrapping="Wrap" Grid.Row="1" Margin="10,5,10,5" Background="{x:Null}" Foreground="{DynamicResource TextBoxForeground1}" BorderBrush="#54FFFFFF"/>
+                                <Border BorderThickness="2,2,2,2" BorderBrush="#54FFFFFF" CornerRadius="3,3,3,3" Grid.RowSpan="6" Margin="5,5,5,5"/>
+                                <Label Content="Пароль" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" FontFamily="Book Antiqua" Foreground="#FFF57C01" Grid.Row="2"/>
+                                <TextBox x:Name="wp_passwordlog" TextWrapping="Wrap" Grid.Row="3" Margin="10,5,10,5" Background="{x:Null}" Foreground="{DynamicResource TextBoxForeground1}" BorderBrush="#54FFFFFF"/>
+                                <DockPanel LastChildFill="False" Grid.Row="4" Margin="10,0,10,0">
+                                    <CheckBox x:Name="pw_rememberlog" Content="Запомнить меня" Foreground="{DynamicResource TextBoxForeground1}" VerticalAlignment="Center"/>
+                                    <Label x:Name="wp_fogotlog" Content="Забыли пароль?" FontFamily="Book Antiqua" Foreground="#FF1169C0" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Cursor="Hand"/>
+                                </DockPanel>
+                            </Grid>
+                        </DockPanel>
+                        <Button x:Name="wp_login_button_Copy" Content="Регистрация" Background="#FF439C4F" BorderThickness="0,0,0,0" Margin="20,3,20,3" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontWeight="Normal" FontStyle="Normal" FontStretch="UltraExpanded" Grid.Row="1" FontSize="14" FontFamily="Arial"/>
+                        <DockPanel LastChildFill="False" VerticalAlignment="Center" Grid.Row="2"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="register_page" Visibility="Hidden" BorderBrush="{x:Null}" Background="{x:Null}"/>
+            <TabItem x:Name="map_0" Visibility="Hidden">
+                <Grid Background="#FF979797"/>
+            </TabItem>
+        </TabControl>
+        <DockPanel x:Name="window_tool_dockpanel" LastChildFill="False" HorizontalAlignment="Stretch" Background="#FF212529">
+            <Image x:Name="Window_close" HorizontalAlignment="Left" DockPanel.Dock="Right" Source="/close.png" MouseUp="Window_close_MouseUp"/>
+            <Image x:Name="Window_minimize" DockPanel.Dock="Right" Source="/minimize.png" MouseUp="Window_minimize_MouseUp" Width="23.47" FlowDirection="RightToLeft"/>
+        </DockPanel>
+        <Label x:Name="logined_user" Content="USER_NAME" FontFamily="Bookman Old Style" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,50,0" Foreground="#FFF57C01" Visibility="Hidden"/>
+        <Grid x:Name="rp_grid" Margin="0,0,0,0" Grid.RowSpan="2" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="rp_login" HorizontalAlignment="Left" Margin="99,0,0,0" Text="Логин" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Column="0"/>
+            <TextBox x:Name="rp_name" HorizontalAlignment="Left" Margin="99,0,0,0" Text="Имя" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="0"/>
+            <TextBox x:Name="rp_surname" HorizontalAlignment="Left" Margin="99,0,0,0" Text="Фамилия" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="0"/>
+            <PasswordBox x:Name="rp_password" HorizontalAlignment="Left" Margin="99,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="120" Password="пароль" Grid.Column="0"/>
+            <TextBox x:Name="rp_email" HorizontalAlignment="Left" Text="Адрес электронной почты" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" Margin="84,0,0,0"/>
+            <Button x:Name="rp_submit" Content="отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="40" Margin="109,0,0,0" Background="#FFC9C9C9" Grid.Row="5" Click="rp_submit_Click" Grid.Column="0"/>
+        </Grid>
+    </Grid>
+</Window>

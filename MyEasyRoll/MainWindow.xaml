@@ -106,15 +106,18 @@
             </TabItem>
             <TabItem x:Name="register_page" Visibility="Hidden" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,0">
                 <Grid x:Name="rp_grid" Margin="0,0,-6,0" Height="1057">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
                     <RichTextBox x:Name="rp_user_licence" Grid.Column="1" Grid.RowSpan="3" Margin="33,33,33,33" Loaded="rp_user_licence_Loaded" Foreground="{DynamicResource TextBoxForeground1}" Background="{x:Null}" BorderBrush="{x:Null}" Focusable="False">
                         <FlowDocument/>
                     </RichTextBox>
@@ -146,7 +149,7 @@
                         <Label x:Name="rp_pass_label" Content="Пароль" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontFamily="Book Antiqua" Foreground="#FFF57C01" FontSize="14" FontWeight="Bold" Grid.Row="6"/>
                         <Button x:Name="rp_register_button" Content="Регистрация" Background="#FF439C4F" BorderThickness="0,0,0,0" Margin="10,10,10,10" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontWeight="Normal" FontStyle="Normal" FontStretch="UltraExpanded" Grid.Row="8" FontSize="14" FontFamily="Arial" Grid.ColumnSpan="2" Click="rp_register_button_Click"/>
                     </Grid>
-                </Grid>
+        </Grid>
             </TabItem>
             <TabItem x:Name="map_0" Visibility="Hidden"/>
             <TabItem x:Name="accounting_page" Margin="0,0,-4,-2"/>

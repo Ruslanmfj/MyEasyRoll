@@ -174,26 +174,26 @@ namespace MyEasyRoll
                 rp_pass_label.Foreground = new SolidColorBrush(Color.FromRgb(214, 11, 11));
             }
             else
-            {
-                database datab = new database();
+        {
+            database datab = new database();
                 MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO users (id,login,name,surname,password,email,email_verify) VALUES (NULL,@uL,@uN,@uS,@uP,@uE,'no');", datab.getConnection());
-                SQLcommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value = rp_login.Text;
-                SQLcommand.Parameters.Add("@uN", MySqlDbType.VarChar).Value = rp_name.Text;
-                SQLcommand.Parameters.Add("@uS", MySqlDbType.VarChar).Value = rp_surname.Text;
-                SQLcommand.Parameters.Add("@uP", MySqlDbType.VarChar).Value = rp_password.Password.ToString();
-                SQLcommand.Parameters.Add("@uE", MySqlDbType.VarChar).Value = rp_email.Text;
+            SQLcommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value = rp_login.Text;
+            SQLcommand.Parameters.Add("@uN", MySqlDbType.VarChar).Value = rp_name.Text;
+            SQLcommand.Parameters.Add("@uS", MySqlDbType.VarChar).Value = rp_surname.Text;
+            SQLcommand.Parameters.Add("@uP", MySqlDbType.VarChar).Value = rp_password.Password.ToString();
+            SQLcommand.Parameters.Add("@uE", MySqlDbType.VarChar).Value = rp_email.Text;
 
-                datab.openConnection();
-                if (SQLcommand.ExecuteNonQuery() == 1)
-                {
-                    general_tabs.SelectedItem = map_0;
+            datab.openConnection();
+            if (SQLcommand.ExecuteNonQuery() == 1)
+            {
+                general_tabs.SelectedItem = map_0;
                     logined_user.Content = rp_surname.Text + " " + rp_name.Text + "(" + rp_login.Text + ")";
-                    logined_user.Visibility = Visibility.Visible;
-                }
-
-                else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
-                datab.closeConnection();
+                logined_user.Visibility = Visibility.Visible;
             }
+                
+                else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
+            datab.closeConnection();
+        }
         }
 
         private void rp_email_GotFocus(object sender, RoutedEventArgs e)
@@ -393,7 +393,7 @@ namespace MyEasyRoll
                 mp_map_viewbox.Width = mp_map_viewbox.Width + 50;
             }
             else
-            {
+        {
                 mp_map_viewbox.Height = mp_map_viewbox.Height - 50;
                 mp_map_viewbox.Width = mp_map_viewbox.Width - 50;
             }
@@ -410,7 +410,7 @@ namespace MyEasyRoll
                 cw.Width = new GridLength(25);
                 mp_map_grid.ColumnDefinitions.Add(cw);
                 for (int o=0; o != 50; o++)
-                {
+        {
                     RowDefinition rw = new RowDefinition();
                     rw.Height = new GridLength(25);
                     mp_map_grid.RowDefinitions.Add(rw);

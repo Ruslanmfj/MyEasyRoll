@@ -19,13 +19,17 @@
             <RowDefinition Height="45*"/>
         </Grid.RowDefinitions>
         <Grid x:Name="mp_grid1" Margin="0,0,6,0" Grid.RowSpan="2" Background="#19F5F5F5" Grid.Row="1" MouseMove="Grid_MouseMove" MouseUp="mp_grid1_MouseUp">
-            <Viewbox x:Name="mp_map_viewbox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="5000" Stretch="Uniform" Height="5000" MouseWheel="mp_map_viewbox_MouseWheel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="85*"/>
+            </Grid.RowDefinitions>
+            <Viewbox x:Name="mp_map_viewbox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="5000" Stretch="Uniform" Height="5000" MouseWheel="mp_map_viewbox_MouseWheel" Margin="0,0,0,0" Grid.RowSpan="1" Grid.Row="1">
                 <Grid Width="1000" Height="1000">
                     <Image x:Name="testimg" Source="/testmap.jpg" Visibility="Visible"/>
                     <Grid x:Name="mp_map_grid"/>
                 </Grid>
             </Viewbox>
-            <Grid x:Name="mp_menus" HorizontalAlignment="Left" Background="#99000000" Width="45">
+            <Grid x:Name="mp_menus" HorizontalAlignment="Left" Background="#99000000" Width="45" Grid.RowSpan="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"/>
                     <RowDefinition Height="*"/>
@@ -33,9 +37,9 @@
                 </Grid.RowDefinitions>
                 <Border BorderThickness="1" BorderBrush="#7F000000" Margin="4,4,4,4" Background="#02000000" MouseUp="mp_more_menus_MouseUp"/>
                 <Image x:Name="mp_more_menus" Margin="8,8,8,8" Grid.RowSpan="1" Source="/more.png" Stretch="Uniform" MouseUp="mp_more_menus_MouseUp"/>
-                <Button Content="Button" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Stretch" Click="Button_Click"/>
+                <Button x:Name="_111" Content="Button" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Stretch" Click="Button_Click"/>
             </Grid>
-            <DockPanel x:Name="mp_chat" LastChildFill="False" HorizontalAlignment="Left" VerticalAlignment="Top" Width="276" Height="400" Background="#99000000" Margin="1539,339,0,0" MinHeight="35" MinWidth="85">
+            <DockPanel x:Name="mp_chat" LastChildFill="False" HorizontalAlignment="Left" VerticalAlignment="Top" Width="276" Height="400" Background="#99000000" Margin="1539,303,0,0" MinHeight="35" MinWidth="85" Grid.Row="1">
                 <DockPanel x:Name="mp_chat_header" LastChildFill="False" DockPanel.Dock="Top" VerticalAlignment="Top" Height="25" Background="#7F000000" MouseDown="mp_chat_header_MouseDown" MouseUp="mp_chat_header_MouseUp">
                     <Label x:Name="mp_chat_close_button" Content="X" Width="19" DockPanel.Dock="Right" Foreground="Red" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="5,1,5,5" Background="#39FFFFFF" Margin="3,3,3,3" FontFamily="Showcard Gothic" MouseUp="mp_chat_close_button_MouseUp"/>
                     <Label x:Name="mp_chat_hide_button" Content="--" DockPanel.Dock="Right" Foreground="Red" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Padding="5,5,5,5" Background="#39FFFFFF" Width="19" Height="19" FontFamily="Arial Rounded MT Bold" MouseUp="mp_chat_hide_button_MouseUp" Margin="3,3,3,3"/>
@@ -52,6 +56,11 @@
                 </Grid>
                 <TextBox x:Name="Debug" Text="TextBox" TextWrapping="Wrap" DockPanel.Dock="Top"/>
             </DockPanel>
+            <Menu x:Name="mp_tools_dock" Margin="45,0,0,0" Background="{x:Null}" Visibility="Collapsed">
+                <MenuItem Header="Карта" Foreground="{DynamicResource TextBoxForeground1}">
+                    <MenuItem Header="Изображение" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
         </Grid>
         <TabControl x:Name="general_tabs" Visibility="Hidden" Background="{x:Null}" Grid.RowSpan="2" Grid.Row="1" BorderBrush="{x:Null}">
             <TabItem Background="{x:Null}" x:Name="wellcome_page" Visibility="Hidden" BorderBrush="{x:Null}" Margin="0,0,0,0">

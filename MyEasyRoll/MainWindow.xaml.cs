@@ -536,7 +536,7 @@ namespace MyEasyRoll
                 cw.Width = new GridLength(25);
                 mp_map_grid.ColumnDefinitions.Add(cw);
                 for (int o=0; o != 50; o++)
-                {
+        {
                     RowDefinition rw = new RowDefinition();
                     rw.Height = new GridLength(25);
                     mp_map_grid.RowDefinitions.Add(rw);

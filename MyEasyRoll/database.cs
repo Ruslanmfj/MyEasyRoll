@@ -7,7 +7,7 @@ namespace MyEasyRoll
 {
     class database
     {
-        MySqlConnection connection = new MySqlConnection("server=172.27.63.225;port = 3306; user=dba;password=dbaPass;database=MyEasyRoll");
+        MySqlConnection connection = new MySqlConnection("server=127.0.0.1;port = 3306; user=dba;password=dbaPass;database=MyEasyRoll");
     
     public void openConnection()
         {

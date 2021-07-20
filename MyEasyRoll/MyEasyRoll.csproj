@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="10.png" />
+    <None Remove="12.png" />
+    <None Remove="4.png" />
+    <None Remove="6.png" />
+    <None Remove="Arrow.png" />
     <None Remove="close.png" />
+    <None Remove="d20.png" />
+    <None Remove="Dice_rpg.png" />
     <None Remove="dragon.png" />
     <None Remove="enter_idle.png" />
     <None Remove="minimize.png" />
@@ -21,7 +28,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="10.png" />
+    <Resource Include="12.png" />
+    <Resource Include="4.png" />
+    <Resource Include="6.png" />
+    <Resource Include="Arrow.png" />
     <Resource Include="close.png" />
+    <Resource Include="d20.png" />
+    <Resource Include="Dice_rpg.png" />
     <Resource Include="dragon.png" />
     <Resource Include="enter_idle.png" />
     <Resource Include="minimize.png" />

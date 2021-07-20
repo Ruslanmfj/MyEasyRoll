@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
 
 namespace MyEasyRoll
 {
@@ -29,6 +31,7 @@ namespace MyEasyRoll
         public bool chat_resize_NSWE = false;
         public double[] chat_old_coordinates = new double[2];
         public double[] chat_old_size = new double[2];
+        public System.Timers.Timer chat_timer_vobj;
 
         public MainWindow()
         {
@@ -41,6 +44,114 @@ namespace MyEasyRoll
             this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
             this.Left = 0;
             this.Top = 0;
+            SetTimer();
+        }
+
+        public void SetTimer()
+        {
+            chat_timer_vobj = new System.Timers.Timer(2000);
+            chat_timer_vobj.Elapsed += Chat_timer;
+            chat_timer_vobj.AutoReset = true;
+            chat_timer_vobj.Enabled = true;
+        }
+
+        public void Chat_timer(Object source, ElapsedEventArgs e)
+        {
+            new Thread(() =>
+            {
+                Dispatcher.Invoke((Action)(() =>
+                {
+                    LoadChat(mp_chat_main_docks);
+                }));
+
+            }).Start();
+        }
+
+        public void LoadChat(DockPanel DP)
+        {
+            database DB = new database();
+            MySqlDataAdapter adapter = new MySqlDataAdapter();
+            MySqlCommand commanda = new MySqlCommand("SELECT * FROM chat_TEST", DB.getConnection());
+            DataTable dt = new DataTable();
+
+            adapter.SelectCommand = commanda;
+            adapter.Fill(dt);
+            if (dt.Rows.Count == 0)
+            {
+                //Paste empty function here
+            }
+            else
+            {
+                if(DP.Children.Count != dt.Rows.Count)
+                {
+                    if (DP.Children.Count+1 == dt.Rows.Count)
+                    {
+                        Label LBL = new Label();
+                        LBL.Content = dt.Rows[dt.Rows.Count-1][3].ToString();
+                        LBL.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                        DP.Children.Add(LBL);
+                        DockPanel.SetDock(LBL, Dock.Top);
+                    }
+                    else
+                    {
+                        for (int i = 0; i != dt.Rows.Count; i++)
+                        {
+                            //New code
+                            Grid message_grid = new Grid();
+                            Border message_border = new Border();
+                            DockPanel message_dock = new DockPanel();
+                            Label message_sender = new Label();
+                            TextBox message_content = new TextBox();
+
+                            DP.Children.Add(message_grid);
+                            DockPanel.SetDock(message_grid, Dock.Top);
+                            message_grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+                            message_grid.VerticalAlignment = VerticalAlignment.Stretch;
+                            message_grid.Margin = new Thickness(5, 15, 5, 0);
+                            message_grid.Width = Double.NaN;
+                            message_grid.Height = Double.NaN;
+                            message_border.BorderThickness = new Thickness(0, 0, 0, 3);
+                            message_border.BorderBrush = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                            message_border.VerticalAlignment = VerticalAlignment.Stretch;
+                            message_border.HorizontalAlignment = HorizontalAlignment.Stretch;
+                            message_border.Width = Double.NaN;
+                            message_border.Height = Double.NaN;
+                            message_grid.Children.Add(message_border);
+                            message_dock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                            message_dock.VerticalAlignment = VerticalAlignment.Stretch;
+                            message_grid.Children.Add(message_dock);
+                            message_dock.Height = Double.NaN;
+                            message_dock.Width = Double.NaN;
+                            message_sender.Width = Double.NaN;
+                            message_dock.Children.Add(message_sender);
+                            DockPanel.SetDock(message_sender, Dock.Left);
+                            message_sender.Content = "SH";
+                            message_sender.FontSize = 16;
+                            message_sender.FontFamily = new FontFamily("Bahnschrift Condensed");
+                            message_sender.Height = message_sender.Width;
+                            message_sender.Margin = new Thickness(0, 0, 0, 4);
+                            message_sender.Background = new SolidColorBrush(Color.FromRgb(82,96,120));
+                            message_sender.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                            message_content.Text = dt.Rows[i][1].ToString()+": "+dt.Rows[i][3].ToString();
+                            message_content.Background = null;
+                            message_content.BorderBrush = null;
+                            message_content.Focusable = false;
+                            message_content.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                            message_dock.Children.Add(message_content);
+                            DockPanel.SetDock(message_content, Dock.Top);
+                            message_content.HorizontalAlignment = HorizontalAlignment.Stretch;
+                            message_content.VerticalAlignment = VerticalAlignment.Stretch;
+                            message_content.Width = Double.NaN;
+                            message_content.Height = Double.NaN;
+                            message_content.Margin = new Thickness(0, 0, 0, 4);
+                            message_content.SelectionBrush = null;
+                            message_content.SelectionTextBrush = null;
+                            message_content.IsEnabled = false;
+                            message_content.TextWrapping = TextWrapping.Wrap;
+                        }
+                    }
+                }
+            }
         }
 
         private void wp_register_button_Click(object sender, RoutedEventArgs e)
@@ -318,7 +429,11 @@ namespace MyEasyRoll
             {
                 double he = 0;
                 he = Mouse.GetPosition(mp_grid1).Y - mp_chat.Margin.Top;
-                if (he > 0) mp_chat.Height = he;
+                if (he > 0)
+                {
+                    mp_chat.Height = he;
+                    mp_chat.Tag = mp_chat.Height.ToString();
+                }
 
             }
             if (chat_resize_NSWE == true)
@@ -327,8 +442,13 @@ namespace MyEasyRoll
                 double wi = 0;
                 he = Mouse.GetPosition(mp_grid1).Y - mp_chat.Margin.Top;
                 wi = Mouse.GetPosition(mp_grid1).X - mp_chat.Margin.Left;
-                if (he > 0) mp_chat.Height = he;
+                if (he > 0)
+                {
+                    mp_chat.Tag = mp_chat.Height.ToString();
+                    mp_chat.Height = he;
+                }
                 if (wi > 0) mp_chat.Width = wi;
+                
             }
         }
 
@@ -336,13 +456,17 @@ namespace MyEasyRoll
         {
             if (mp_chat.Height == 25)
             {
-                mp_chat.Height = 400;
+                mp_chat.Height = Double.Parse(mp_chat.Tag.ToString());
                 mp_chat_hide_button.Content = "--";
+                mp_chat.MinHeight = 35;
+                Mp_chat_footer.Visibility = Visibility.Visible;
             }
             else
             {
                 mp_chat.Height = 25;
                 mp_chat_hide_button.Content = "O";
+                mp_chat.MinHeight = 0;
+                Mp_chat_footer.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -451,6 +575,45 @@ namespace MyEasyRoll
         private void CellLeave(object sender, MouseEventArgs e)
         {
             (sender as Border).Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+        }
+
+        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (mp_player_toolbar.Height == 50)
+            {
+                mp_player_toolbar.Height = 300;
+                mp_player_toolbar_image.RenderTransform = new RotateTransform(90); 
+            }
+            else
+            {
+                mp_player_toolbar.Height = 50;
+                mp_player_toolbar_image.RenderTransform = new RotateTransform(-90);
+            }
+        }
+
+        private void mp_char_submit_Click(object sender, RoutedEventArgs e)
+        {
+            database datab = new database();
+            MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO chat_TEST (id,message_sender,message_time,message_message) VALUES (NULL,@mS,@mT,@mM);", datab.getConnection());
+            SQLcommand.Parameters.Add("@mS", MySqlDbType.VarChar).Value = "SEND_CURRENT_USER_HERE";
+            SQLcommand.Parameters.Add("@mT", MySqlDbType.VarChar).Value = System.DateTime.Now.Hour+":"+System.DateTime.Now.Minute;
+            SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = mp_chat_chatfield.Text;
+
+            datab.openConnection();
+            if (SQLcommand.ExecuteNonQuery() == 1)
+            {
+                mp_chat_chatfield.Text = "";
+            }
+            else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
+            datab.closeConnection();
+        }
+
+        private void mp_chat_chatfield_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                mp_char_submit_Click(sender, e);
+            }
         }
     }
 }

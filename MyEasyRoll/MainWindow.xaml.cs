@@ -32,6 +32,7 @@ namespace MyEasyRoll
         public double[] chat_old_coordinates = new double[2];
         public double[] chat_old_size = new double[2];
         public System.Timers.Timer chat_timer_vobj;
+        public int LastDiceRollingValue = 0;
 
         public MainWindow()
         {
@@ -49,7 +50,7 @@ namespace MyEasyRoll
 
         public void SetTimer()
         {
-            chat_timer_vobj = new System.Timers.Timer(2000);
+            chat_timer_vobj = new System.Timers.Timer(1000);
             chat_timer_vobj.Elapsed += Chat_timer;
             chat_timer_vobj.AutoReset = true;
             chat_timer_vobj.Enabled = true;
@@ -86,11 +87,56 @@ namespace MyEasyRoll
                 {
                     if (DP.Children.Count+1 == dt.Rows.Count)
                     {
-                        Label LBL = new Label();
-                        LBL.Content = dt.Rows[dt.Rows.Count-1][3].ToString();
-                        LBL.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                        DP.Children.Add(LBL);
-                        DockPanel.SetDock(LBL, Dock.Top);
+                        Grid message_grid = new Grid();
+                        Border message_border = new Border();
+                        DockPanel message_dock = new DockPanel();
+                        Label message_sender = new Label();
+                        TextBlock message_content = new TextBlock();
+
+                        DP.Children.Add(message_grid);
+                        DockPanel.SetDock(message_grid, Dock.Top);
+                        message_grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        message_grid.VerticalAlignment = VerticalAlignment.Stretch;
+                        message_grid.Margin = new Thickness(5, 15, 5, 0);
+                        message_grid.Width = Double.NaN;
+                        message_grid.Height = Double.NaN;
+                        message_border.BorderThickness = new Thickness(0, 0, 0, 3);
+                        message_border.BorderBrush = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                        message_border.VerticalAlignment = VerticalAlignment.Stretch;
+                        message_border.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        message_border.Width = Double.NaN;
+                        message_border.Height = Double.NaN;
+                        message_grid.Children.Add(message_border);
+                        message_dock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        message_dock.VerticalAlignment = VerticalAlignment.Stretch;
+                        message_grid.Children.Add(message_dock);
+                        message_dock.Height = Double.NaN;
+                        message_dock.Width = Double.NaN;
+                        message_sender.Width = Double.NaN;
+                        message_dock.Children.Add(message_sender);
+                        DockPanel.SetDock(message_sender, Dock.Left);
+                        message_sender.Content = "SH";
+                        message_sender.FontSize = 16;
+                        message_sender.FontFamily = new FontFamily("Bahnschrift Condensed");
+                        message_sender.Height = message_sender.Width;
+                        message_sender.Margin = new Thickness(0, 0, 0, 4);
+                        message_sender.Background = new SolidColorBrush(Color.FromRgb(82, 96, 120));
+                        message_sender.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                        message_content.Text = dt.Rows[dt.Rows.Count - 1][1].ToString()+": "+dt.Rows[dt.Rows.Count - 1][3].ToString();
+                        message_content.Background = null;
+                        message_content.Focusable = false;
+                        message_content.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                        message_dock.Children.Add(message_content);
+                        DockPanel.SetDock(message_content, Dock.Top);
+                        message_content.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        message_content.VerticalAlignment = VerticalAlignment.Stretch;
+                        message_content.Width = Double.NaN;
+                        message_content.Height = Double.NaN;
+                        message_content.Margin = new Thickness(0, 0, 0, 4);
+                        message_content.TextWrapping = TextWrapping.Wrap;
+                        if (dt.Rows[dt.Rows.Count - 1][4].ToString() == "Message") message_dock.Background = new SolidColorBrush(Color.FromArgb(147, 22, 22, 125));
+                        if (dt.Rows[dt.Rows.Count - 1][4].ToString() == "Roll") message_dock.Background = new SolidColorBrush(Color.FromArgb(255, 255, 98, 125));
+                        (DP.Parent as ScrollViewer).ScrollToEnd();
                     }
                     else
                     {
@@ -101,7 +147,7 @@ namespace MyEasyRoll
                             Border message_border = new Border();
                             DockPanel message_dock = new DockPanel();
                             Label message_sender = new Label();
-                            TextBox message_content = new TextBox();
+                            TextBlock message_content = new TextBlock();
 
                             DP.Children.Add(message_grid);
                             DockPanel.SetDock(message_grid, Dock.Top);
@@ -130,11 +176,10 @@ namespace MyEasyRoll
                             message_sender.FontFamily = new FontFamily("Bahnschrift Condensed");
                             message_sender.Height = message_sender.Width;
                             message_sender.Margin = new Thickness(0, 0, 0, 4);
-                            message_sender.Background = new SolidColorBrush(Color.FromRgb(82,96,120));
+                            message_sender.Background = new SolidColorBrush(Color.FromRgb(82, 96, 120));
                             message_sender.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
-                            message_content.Text = dt.Rows[i][1].ToString()+": "+dt.Rows[i][3].ToString();
+                            message_content.Text = dt.Rows[i][1].ToString() + ": " + dt.Rows[i][3].ToString();
                             message_content.Background = null;
-                            message_content.BorderBrush = null;
                             message_content.Focusable = false;
                             message_content.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
                             message_dock.Children.Add(message_content);
@@ -144,10 +189,10 @@ namespace MyEasyRoll
                             message_content.Width = Double.NaN;
                             message_content.Height = Double.NaN;
                             message_content.Margin = new Thickness(0, 0, 0, 4);
-                            message_content.SelectionBrush = null;
-                            message_content.SelectionTextBrush = null;
-                            message_content.IsEnabled = false;
                             message_content.TextWrapping = TextWrapping.Wrap;
+                            if (dt.Rows[i][4].ToString() == "Message") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 22, 22, 147));
+                            if (dt.Rows[i][4].ToString() == "Roll") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 255, 98, 255));
+                            (DP.Parent as ScrollViewer).ScrollToEnd();
                         }
                     }
                 }
@@ -594,8 +639,8 @@ namespace MyEasyRoll
         private void mp_char_submit_Click(object sender, RoutedEventArgs e)
         {
             database datab = new database();
-            MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO chat_TEST (id,message_sender,message_time,message_message) VALUES (NULL,@mS,@mT,@mM);", datab.getConnection());
-            SQLcommand.Parameters.Add("@mS", MySqlDbType.VarChar).Value = "SEND_CURRENT_USER_HERE";
+            MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO chat_TEST (id,message_sender,message_time,message_message,message_type) VALUES (NULL,@mS,@mT,@mM,'Message');", datab.getConnection());
+            SQLcommand.Parameters.Add("@mS", MySqlDbType.VarChar).Value = "USER";
             SQLcommand.Parameters.Add("@mT", MySqlDbType.VarChar).Value = System.DateTime.Now.Hour+":"+System.DateTime.Now.Minute;
             SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = mp_chat_chatfield.Text;
 
@@ -606,6 +651,7 @@ namespace MyEasyRoll
             }
             else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
             datab.closeConnection();
+            mp_chat_scroll.ScrollToEnd();
         }
 
         private void mp_chat_chatfield_KeyDown(object sender, KeyEventArgs e)
@@ -614,6 +660,142 @@ namespace MyEasyRoll
             {
                 mp_char_submit_Click(sender, e);
             }
+        }
+
+        private void mp_tool_dice_4_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Viewbox UI_element1 = mp_map_viewbox;
+            Grid UI_element2 = mp_menus;
+            DockPanel UI_element3 = mp_chat;
+            Menu UI_element4 = mp_tools_dock;
+            Grid UI_element5 = mp_player_toolbar;
+            Grid UI_element6 = mp_question;
+
+            UI_element1.IsEnabled = false;
+            UI_element2.IsEnabled = false;
+            UI_element3.IsEnabled = false;
+            UI_element4.IsEnabled = false;
+            UI_element5.IsEnabled = false;
+            UI_element6.Visibility = Visibility.Visible;
+            String Dice = "";
+            if (sender == mp_tool_dice_20) Dice = "d20";
+            if (sender == mp_tool_dice_12) Dice = "d12";
+            if (sender == mp_tool_dice_10) Dice = "d10";
+            if (sender == mp_tool_dice_8) Dice = "d8";
+            if (sender == mp_tool_dice_6) Dice = "d6";
+            if (sender == mp_tool_dice_4) Dice = "d4";
+
+            if (sender == mp_tool_dice_20) LastDiceRollingValue = 20;
+            if (sender == mp_tool_dice_12) LastDiceRollingValue = 12;
+            if (sender == mp_tool_dice_10) LastDiceRollingValue = 10;
+            if (sender == mp_tool_dice_8) LastDiceRollingValue = 8;
+            if (sender == mp_tool_dice_6) LastDiceRollingValue = 6;
+            if (sender == mp_tool_dice_4) LastDiceRollingValue = 4;
+
+            mp_label1.Content = "Колличество " + Dice + " кубов";
+        }
+
+        private void mp_close_ask_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Viewbox UI_element1 = mp_map_viewbox;
+            Grid UI_element2 = mp_menus;
+            DockPanel UI_element3 = mp_chat;
+            Menu UI_element4 = mp_tools_dock;
+            Grid UI_element5 = mp_player_toolbar;
+            Grid UI_element6 = mp_question;
+
+            UI_element1.IsEnabled = !false;
+            UI_element2.IsEnabled = !false;
+            UI_element3.IsEnabled = !false;
+            UI_element4.IsEnabled = !false;
+            UI_element5.IsEnabled = !false;
+            UI_element6.Visibility = Visibility.Collapsed;
+        }
+
+        private void mp_ask_textbox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key== Key.Enter)
+            {
+                database datab = new database();
+                MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO chat_TEST (id,message_sender,message_time,message_message,message_type) VALUES (NULL,@mS,@mT,@mM,'Roll');", datab.getConnection());
+                SQLcommand.Parameters.Add("@mS", MySqlDbType.VarChar).Value = "Roll";
+                SQLcommand.Parameters.Add("@mT", MySqlDbType.VarChar).Value = System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute;
+                if (Int32.Parse(mp_ask_textbox.Text)==1) SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = new Random().Next(1, LastDiceRollingValue).ToString();
+                else
+                {
+                    int AverageRoll = 0;
+                    for (int i=0;i!= Int32.Parse(mp_ask_textbox.Text); i++)
+                    {
+                        AverageRoll = AverageRoll + new Random().Next(1, LastDiceRollingValue);
+                    }
+                    SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = "Бросок "+mp_ask_textbox.Text+"d"+LastDiceRollingValue+":"+AverageRoll.ToString();
+                }
+
+                datab.openConnection();
+                if (SQLcommand.ExecuteNonQuery() == 1)
+                {
+                }
+                else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
+                datab.closeConnection();
+                Viewbox UI_element1 = mp_map_viewbox;
+                Grid UI_element2 = mp_menus;
+                DockPanel UI_element3 = mp_chat;
+                Menu UI_element4 = mp_tools_dock;
+                Grid UI_element5 = mp_player_toolbar;
+                Grid UI_element6 = mp_question;
+
+                UI_element1.IsEnabled = !false;
+                UI_element2.IsEnabled = !false;
+                UI_element3.IsEnabled = !false;
+                UI_element4.IsEnabled = !false;
+                UI_element5.IsEnabled = !false;
+                UI_element6.Visibility = Visibility.Collapsed;
+                mp_chat_scroll.ScrollToEnd();
+            }
+        }
+
+        private void mp_send_diceroll_Click(object sender, RoutedEventArgs e)
+        {
+            database datab = new database();
+            MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO chat_TEST (id,message_sender,message_time,message_message,message_type) VALUES (NULL,@mS,@mT,@mM,'Roll');", datab.getConnection());
+            SQLcommand.Parameters.Add("@mS", MySqlDbType.VarChar).Value = "Roll";
+            SQLcommand.Parameters.Add("@mT", MySqlDbType.VarChar).Value = System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute;
+            if (Int32.Parse(mp_ask_textbox.Text) == 1) SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = new Random().Next(1, LastDiceRollingValue).ToString();
+            else
+            {
+                int AverageRoll = 0;
+                for (int i = 0; i != Int32.Parse(mp_ask_textbox.Text); i++)
+                {
+                    AverageRoll = AverageRoll + new Random().Next(1, LastDiceRollingValue);
+                }
+                SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = "Бросок " + mp_ask_textbox.Text + "d" + LastDiceRollingValue + ":" + AverageRoll.ToString();
+            }
+
+            datab.openConnection();
+            if (SQLcommand.ExecuteNonQuery() == 1)
+            {
+            }
+            else MessageBox.Show("Ошибка записи. Возможно сервис на данный момент недоступен.");
+            datab.closeConnection();
+            Viewbox UI_element1 = mp_map_viewbox;
+            Grid UI_element2 = mp_menus;
+            DockPanel UI_element3 = mp_chat;
+            Menu UI_element4 = mp_tools_dock;
+            Grid UI_element5 = mp_player_toolbar;
+            Grid UI_element6 = mp_question;
+
+            UI_element1.IsEnabled = !false;
+            UI_element2.IsEnabled = !false;
+            UI_element3.IsEnabled = !false;
+            UI_element4.IsEnabled = !false;
+            UI_element5.IsEnabled = !false;
+            UI_element6.Visibility = Visibility.Collapsed;
+            mp_chat_scroll.ScrollToEnd();
+        }
+
+        private void mp_ask_textbox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !(Char.IsDigit(e.Text, 0));
         }
     }
 }

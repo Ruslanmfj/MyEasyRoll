@@ -56,7 +56,7 @@ namespace MyEasyRoll
             chat_timer_vobj.Enabled = true;
         }
 
-        public void Chat_timer(Object source, ElapsedEventArgs e)
+        async void Chat_timer(Object source, ElapsedEventArgs e)
         {
             new Thread(() =>
             {
@@ -68,7 +68,7 @@ namespace MyEasyRoll
             }).Start();
         }
 
-        public void LoadChat(DockPanel DP)
+        async void LoadChat(DockPanel DP)
         {
             database DB = new database();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
@@ -91,7 +91,6 @@ namespace MyEasyRoll
                         Border message_border = new Border();
                         DockPanel message_dock = new DockPanel();
                         Label message_sender = new Label();
-                        TextBlock message_content = new TextBlock();
 
                         DP.Children.Add(message_grid);
                         DockPanel.SetDock(message_grid, Dock.Top);
@@ -112,30 +111,40 @@ namespace MyEasyRoll
                         message_grid.Children.Add(message_dock);
                         message_dock.Height = Double.NaN;
                         message_dock.Width = Double.NaN;
-                        message_sender.Width = Double.NaN;
+                        message_sender.Width = 33;
                         message_dock.Children.Add(message_sender);
                         DockPanel.SetDock(message_sender, Dock.Left);
-                        message_sender.Content = "SH";
+                        message_sender.Content = dt.Rows[dt.Rows.Count - 1][1].ToString()[0].ToString().ToUpper() + dt.Rows[dt.Rows.Count - 1][1].ToString()[dt.Rows[dt.Rows.Count - 1][1].ToString().Length-1].ToString().ToUpper();
                         message_sender.FontSize = 16;
                         message_sender.FontFamily = new FontFamily("Bahnschrift Condensed");
-                        message_sender.Height = message_sender.Width;
-                        message_sender.Margin = new Thickness(0, 0, 0, 4);
+                        message_sender.Height = 33;
+                        message_sender.Margin = new Thickness(0, 0, 10, 4);
                         message_sender.Background = new SolidColorBrush(Color.FromRgb(82, 96, 120));
                         message_sender.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
-                        message_content.Text = dt.Rows[dt.Rows.Count - 1][1].ToString()+": "+dt.Rows[dt.Rows.Count - 1][3].ToString();
-                        message_content.Background = null;
-                        message_content.Focusable = false;
-                        message_content.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
-                        message_dock.Children.Add(message_content);
-                        DockPanel.SetDock(message_content, Dock.Top);
-                        message_content.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        message_content.VerticalAlignment = VerticalAlignment.Stretch;
-                        message_content.Width = Double.NaN;
-                        message_content.Height = Double.NaN;
-                        message_content.Margin = new Thickness(0, 0, 0, 4);
-                        message_content.TextWrapping = TextWrapping.Wrap;
-                        if (dt.Rows[dt.Rows.Count - 1][4].ToString() == "Message") message_dock.Background = new SolidColorBrush(Color.FromArgb(147, 22, 22, 125));
-                        if (dt.Rows[dt.Rows.Count - 1][4].ToString() == "Roll") message_dock.Background = new SolidColorBrush(Color.FromArgb(255, 255, 98, 125));
+                        for (int o = 0; o != 2; o++)
+                        {
+                            TextBlock message_content = new TextBlock();
+                            if (o == 0)
+                            {
+                                message_content.Text = dt.Rows[dt.Rows.Count - 1][1].ToString();
+                                message_content.FontSize = 14;
+                                message_content.FontWeight = FontWeights.Bold;
+                            }
+                            if (o == 1) message_content.Text = dt.Rows[dt.Rows.Count - 1][3].ToString();
+                            message_content.Background = null;
+                            message_content.Focusable = false;
+                            message_content.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                            message_dock.Children.Add(message_content);
+                            DockPanel.SetDock(message_content, Dock.Top);
+                            message_content.HorizontalAlignment = HorizontalAlignment.Stretch;
+                            message_content.VerticalAlignment = VerticalAlignment.Stretch;
+                            message_content.Width = Double.NaN;
+                            message_content.Height = Double.NaN;
+                            message_content.Margin = new Thickness(0, 0, 0, 4);
+                            message_content.TextWrapping = TextWrapping.Wrap;
+                        }
+                        /*if (dt.Rows[dt.Rows.Count - 1][4].ToString() == "Message") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 22, 22, 147));
+                        if (dt.Rows[dt.Rows.Count - 1][4].ToString() == "Roll") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 255, 98, 255));*/
                         (DP.Parent as ScrollViewer).ScrollToEnd();
                     }
                     else
@@ -147,7 +156,6 @@ namespace MyEasyRoll
                             Border message_border = new Border();
                             DockPanel message_dock = new DockPanel();
                             Label message_sender = new Label();
-                            TextBlock message_content = new TextBlock();
 
                             DP.Children.Add(message_grid);
                             DockPanel.SetDock(message_grid, Dock.Top);
@@ -168,30 +176,42 @@ namespace MyEasyRoll
                             message_grid.Children.Add(message_dock);
                             message_dock.Height = Double.NaN;
                             message_dock.Width = Double.NaN;
-                            message_sender.Width = Double.NaN;
+                            message_sender.Width = 33;
                             message_dock.Children.Add(message_sender);
                             DockPanel.SetDock(message_sender, Dock.Left);
-                            message_sender.Content = "SH";
+                            message_sender.Content = dt.Rows[i][1].ToString()[0].ToString().ToUpper() + dt.Rows[i][1].ToString()[dt.Rows[i][1].ToString().Length - 1].ToString().ToUpper();
                             message_sender.FontSize = 16;
                             message_sender.FontFamily = new FontFamily("Bahnschrift Condensed");
-                            message_sender.Height = message_sender.Width;
-                            message_sender.Margin = new Thickness(0, 0, 0, 4);
+                            message_sender.Height = 33;
+                            message_sender.Margin = new Thickness(0, 0, 10, 4);
                             message_sender.Background = new SolidColorBrush(Color.FromRgb(82, 96, 120));
                             message_sender.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
-                            message_content.Text = dt.Rows[i][1].ToString() + ": " + dt.Rows[i][3].ToString();
-                            message_content.Background = null;
-                            message_content.Focusable = false;
-                            message_content.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
-                            message_dock.Children.Add(message_content);
-                            DockPanel.SetDock(message_content, Dock.Top);
-                            message_content.HorizontalAlignment = HorizontalAlignment.Stretch;
-                            message_content.VerticalAlignment = VerticalAlignment.Stretch;
-                            message_content.Width = Double.NaN;
-                            message_content.Height = Double.NaN;
-                            message_content.Margin = new Thickness(0, 0, 0, 4);
-                            message_content.TextWrapping = TextWrapping.Wrap;
-                            if (dt.Rows[i][4].ToString() == "Message") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 22, 22, 147));
-                            if (dt.Rows[i][4].ToString() == "Roll") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 255, 98, 255));
+                            message_sender.VerticalContentAlignment = VerticalAlignment.Center;
+                            message_sender.HorizontalContentAlignment = HorizontalAlignment.Center;
+                            for (int o = 0; o != 2; o++)
+                            {
+                                TextBlock message_content = new TextBlock();
+                                if (o == 0)
+                                {
+                                    message_content.Text = dt.Rows[i][1].ToString();
+                                    message_content.FontSize = 14;
+                                    message_content.FontWeight = FontWeights.Bold;
+                                }
+                                if (o == 1) message_content.Text = dt.Rows[i][3].ToString();
+                                message_content.Background = null;
+                                message_content.Focusable = false;
+                                message_content.Foreground = new SolidColorBrush(Color.FromRgb(245, 124, 1));
+                                message_dock.Children.Add(message_content);
+                                DockPanel.SetDock(message_content, Dock.Top);
+                                message_content.HorizontalAlignment = HorizontalAlignment.Stretch;
+                                message_content.VerticalAlignment = VerticalAlignment.Stretch;
+                                message_content.Width = Double.NaN;
+                                message_content.Height = Double.NaN;
+                                message_content.Margin = new Thickness(0, 0, 0, 4);
+                                message_content.TextWrapping = TextWrapping.Wrap;
+                            }
+                            /*if (dt.Rows[i][4].ToString() == "Message") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 22, 22, 147));
+                            if (dt.Rows[i][4].ToString() == "Roll") message_dock.Background = new SolidColorBrush(Color.FromArgb(125, 255, 98, 255));*/
                             (DP.Parent as ScrollViewer).ScrollToEnd();
                         }
                     }
@@ -396,11 +416,13 @@ namespace MyEasyRoll
 
                     adapter1.SelectCommand = commanda1;
                     adapter1.Fill(dt1);
-                    userlogin = dt1.Rows[0][1].ToString();
-                    UserName = dt1.Rows[0][2].ToString();
-                    UserSurname = dt1.Rows[0][3].ToString();
-
                     if (dt1.Rows.Count == 0) errorcode = 4;
+                    else
+                    {
+                        userlogin = dt1.Rows[0][1].ToString();
+                        UserName = dt1.Rows[0][2].ToString();
+                        UserSurname = dt1.Rows[0][3].ToString();
+                    }
                 }
             }
             if (errorcode == 1)
@@ -720,7 +742,7 @@ namespace MyEasyRoll
                 MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO chat_TEST (id,message_sender,message_time,message_message,message_type) VALUES (NULL,@mS,@mT,@mM,'Roll');", datab.getConnection());
                 SQLcommand.Parameters.Add("@mS", MySqlDbType.VarChar).Value = "Roll";
                 SQLcommand.Parameters.Add("@mT", MySqlDbType.VarChar).Value = System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute;
-                if (Int32.Parse(mp_ask_textbox.Text)==1) SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = new Random().Next(1, LastDiceRollingValue).ToString();
+                if (Int32.Parse(mp_ask_textbox.Text)==1) SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = "Бросок " + mp_ask_textbox.Text + "d" + LastDiceRollingValue + ":" + new Random().Next(1,LastDiceRollingValue).ToString();
                 else
                 {
                     int AverageRoll = 0;
@@ -760,7 +782,7 @@ namespace MyEasyRoll
             MySqlCommand SQLcommand = new MySqlCommand("INSERT INTO chat_TEST (id,message_sender,message_time,message_message,message_type) VALUES (NULL,@mS,@mT,@mM,'Roll');", datab.getConnection());
             SQLcommand.Parameters.Add("@mS", MySqlDbType.VarChar).Value = "Roll";
             SQLcommand.Parameters.Add("@mT", MySqlDbType.VarChar).Value = System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute;
-            if (Int32.Parse(mp_ask_textbox.Text) == 1) SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = new Random().Next(1, LastDiceRollingValue).ToString();
+            if (Int32.Parse(mp_ask_textbox.Text) == 1) SQLcommand.Parameters.Add("@mM", MySqlDbType.VarChar).Value = "Бросок " + mp_ask_textbox.Text + "d" + LastDiceRollingValue + ":" + new Random().Next(1, LastDiceRollingValue).ToString();
             else
             {
                 int AverageRoll = 0;
@@ -796,6 +818,15 @@ namespace MyEasyRoll
         private void mp_ask_textbox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !(Char.IsDigit(e.Text, 0));
+        }
+
+        private void mp_question_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (mp_question.Visibility == Visibility.Visible)
+            {
+                mp_question.Focus();
+                mp_ask_textbox.Text = "1";
+            }
         }
     }
 }
